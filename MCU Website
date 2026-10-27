@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stark Industries | Iron Man MCU Vault</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        stark: {
+                            red: '#990000',
+                            brightRed: '#E60000',
+                            gold: '#FFD700',
+                            darkGold: '#C59B27',
+                            cyan: '#00F0FF',
+                            darkCyan: '#008B9B',
+                            bg: '#0A0C10',
+                            cardBg: 'rgba(15, 23, 42, 0.75)'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0A0C10;
+            color: #E2E8F0;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Arc Reactor Glow Effects */
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5), 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+        .glow-cyan-lg {
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.8), 0 0 50px rgba(0, 240, 255, 0.4);
+        }
+        .text-glow-cyan {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+        }
+        .text-glow-red {
+            text-shadow: 0 0 10px rgba(230, 0, 0, 0.8);
+        }
+        .glow-red {
+            box-shadow: 0 0 20px rgba(230, 0, 0, 0.6);
+        }
+
+        /* Arc Reactor Pulser */
+        @keyframes pulse-glow {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.9;
+                box-shadow: 0 0 20px rgba(0, 240, 255, 0.6), inset 0 0 15px rgba(0, 240, 255, 0.6);
+            }
+            50% {
+                transform: scale(1.03);
+                opacity: 1;
+                box-shadow: 0 0 40px rgba(0, 240, 255, 0.9), inset 0 0 25px rgba(0, 240, 255, 0.9);
+            }
+        }
+        .arc-pulse {
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+
+        /* Grid Background pattern */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+        }
+
+        /* Holographic glass card */
+        .stark-glass {
+            background: rgba(13, 19, 33, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+        }
+        
+        .stark-glass-red {
+            background: rgba(25, 10, 15, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(230, 0, 0, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0C10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #008B9B;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00F0FF;
+        }
+    </style>
+</head>
+<body class="bg-grid min-h-screen flex flex-col justify-between selection:bg-stark-cyan selection:text-black">
+
+    <!-- HUD Overlay Lines -->
+    <div class="fixed inset-0 pointer-events-none z-50 overflow-hidden opacity-30">
+        <div class="absolute top-4 left-4 border-t-2 border-l-2 border-stark-cyan w-12 h-12"></div>
+        <div class="absolute top-4 right-4 border-t-2 border-r-2 border-stark-cyan w-12 h-12"></div>
+        <div class="absolute bottom-4 left-4 border-b-2 border-l-2 border-stark-cyan w-12 h-12"></div>
+        <div class="absolute bottom-4 right-4 border-b-2 border-r-2 border-stark-cyan w-12 h-12"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-stark-bg/90 backdrop-blur-md border-b border-stark-cyan/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchPage('home')">
+                    <div class="w-10 h-10 rounded-full border-2 border-stark-cyan flex items-center justify-center glow-cyan bg-black/50">
+                        <div class="w-4 h-4 rounded-full bg-stark-cyan arc-pulse"></div>
+                    </div>
+                    <div>
+                        <span class="font-orbitron text-xl font-bold tracking-wider text-white">STARK</span>
+                        <span class="font-orbitron text-xs block text-stark-cyan tracking-widest uppercase -mt-1">Industries HUD</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="flex space-x-2 sm:space-x-6">
+                    <button id="nav-home" onclick="switchPage('home')" class="px-4 py-2 rounded-md font-orbitron text-sm sm:text-base font-semibold transition-all duration-300 border border-stark-cyan/50 text-stark-cyan bg-stark-cyan/10 glow-cyan">
+                        <i class="fa-solid font-icon fa-house mr-2"></i>Overview
+                    </button>
+                    <button id="nav-tech" onclick="switchPage('tech')" class="px-4 py-2 rounded-md font-orbitron text-sm sm:text-base font-semibold transition-all duration-300 border border-transparent text-gray-400 hover:text-stark-gold hover:border-stark-gold/40">
+                        <i class="fa-solid fa-shield-halved mr-2"></i>Armor Vault & Tech
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ================= PAGE 1: HOME / OVERVIEW ================= -->
+        <div id="page-home" class="space-y-16">
+
+            <!-- Hero Section -->
+            <section class="relative rounded-2xl overflow-hidden border border-stark-cyan/30 stark-glass p-8 md:p-12 flex flex-col md:flex-row items-center justify-between">
+                <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-stark-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-20 -top-20 w-96 h-96 bg-stark-brightRed/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Left Column Text -->
+                <div class="z-10 md:w-3/5 space-y-6 text-center md:text-left">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-stark-gold/40 bg-stark-gold/10 text-stark-gold text-xs font-orbitron uppercase tracking-widest">
+                        <i class="fa-solid fa-bolt text-xs"></i>
+                        <span>MCU Avenger Profile #001</span>
+                    </div>
+                    <h1 class="font-orbitron text-4xl sm:text-6xl font-black text-white leading-tight">
+                        I AM <span class="text-transparent bg-clip-text bg-gradient-to-r from-stark-brightRed via-stark-gold to-stark-brightRed text-glow-red">IRON MAN</span>
+                    </h1>
+                    <p class="text-gray-300 text-lg sm:text-xl font-light leading-relaxed">
+                        Genius, billionaire, playboy, philanthropist. Anthony Edward "Tony" Stark revolutionized clean energy and global defense, forging the Earth's mightiest legacy from a cave with a box of scraps.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4 justify-center md:justify-start pt-4">
+                        <button onclick="switchPage('tech')" class="px-6 py-3 rounded-lg bg-gradient-to-r from-stark-red to-stark-brightRed text-white font-orbitron font-bold shadow-lg hover:shadow-stark-brightRed/50 transition duration-300 border border-stark-gold/40 flex items-center space-x-2">
+                            <span>EXPLORE ARMOR VAULT</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <a href="#suit-evolution" class="px-6 py-3 rounded-lg border border-stark-cyan/50 text-stark-cyan font-orbitron font-bold hover:bg-stark-cyan/10 transition duration-300 flex items-center space-x-2">
+                            <span>SUIT EVOLUTION</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Arc Reactor -->
+                <div class="z-10 md:w-2/5 mt-10 md:mt-0 flex flex-col items-center justify-center">
+                    <div class="relative w-64 h-64 sm:w-72 sm:h-72 rounded-full border-4 border-stark-cyan/40 bg-black/80 flex items-center justify-center arc-pulse cursor-pointer group" onclick="pulseArcReactor()" id="main-arc-reactor">
+                        <!-- Outer Ring Detail -->
+                        <div class="absolute inset-2 rounded-full border-2 border-dashed border-stark-cyan/60 animate-spin-slow"></div>
+                        <!-- Inner Glowing Core -->
+                        <div class="w-40 h-40 sm:w-48 sm:h-48 rounded-full border-4 border-stark-cyan bg-stark-cyan/20 flex items-center justify-center shadow-inner">
+                            <div class="w-24 h-24 rounded-full bg-white glow-cyan-lg flex items-center justify-center text-stark-darkCyan">
+                                <i class="fa-solid fa-atom text-4xl animate-pulse"></i>
+                            </div>
+                        </div>
+                        <!-- Status HUD Overlay -->
+                        <div class="absolute -bottom-4 bg-black/90 px-4 py-1 rounded-full border border-stark-cyan text-xs font-orbitron text-stark-cyan">
+                            POWER OUTPUT: <span id="reactor-output" class="text-white font-bold">100%</span>
+                        </div>
+                    </div>
+                    <span class="text-xs font-orbitron text-gray-400 mt-6 tracking-widest uppercase">Click Reactor to Overcharge</span>
+                </div>
+            </section>
+
+            <!-- Quick Stats HUD -->
+            <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="stark-glass p-5 rounded-xl border-l-4 border-stark-cyan flex flex-col">
+                    <span class="font-orbitron text-xs text-gray-400">PRIMARY LOCATION</span>
+                    <span class="font-orbitron text-lg font-bold text-white mt-1">Stark Tower / HQ</span>
+                    <span class="text-xs text-stark-cyan mt-2">New York City, NY</span>
+                </div>
+                <div class="stark-glass p-5 rounded-xl border-l-4 border-stark-gold flex flex-col">
+                    <span class="font-orbitron text-xs text-gray-400">ARMOR COUNT</span>
+                    <span class="font-orbitron text-lg font-bold text-white mt-1">85 Main Models</span>
+                    <span class="text-xs text-stark-gold mt-2">Mark I to LXXXV</span>
+                </div>
+                <div class="stark-glass p-5 rounded-xl border-l-4 border-stark-brightRed flex flex-col">
+                    <span class="font-orbitron text-xs text-gray-400">AI ASSISTANTS</span>
+                    <span class="font-orbitron text-lg font-bold text-white mt-1">J.A.R.V.I.S. / F.R.I.D.A.Y.</span>
+                    <span class="text-xs text-stark-brightRed mt-2">Tactical Neural Networks</span>
+                </div>
+                <div class="stark-glass p-5 rounded-xl border-l-4 border-stark-cyan flex flex-col">
+                    <span class="font-orbitron text-xs text-gray-400">FIRST APPEARANCE</span>
+                    <span class="font-orbitron text-lg font-bold text-white mt-1">Iron Man (2008)</span>
+                    <span class="text-xs text-stark-cyan mt-2">MCU Genesis</span>
+                </div>
+            </section>
+
+            <!-- Suit Evolution Timeline Section -->
+            <section id="suit-evolution" class="space-y-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-stark-cyan/20 pb-4">
+                    <div>
+                        <h2 class="font-orbitron text-3xl font-bold text-white flex items-center">
+                            <i class="fa-solid fa-timeline text-stark-cyan mr-3"></i>EVOLUTION OF THE ARMOR
+                        </h2>
+                        <p class="text-gray-400 mt-1">Key technological leaps throughout Tony Stark's MCU journey</p>
+                    </div>
+                    <span class="font-orbitron text-xs text-stark-gold mt-2 md:mt-0">SELECT A MODEL FOR HIGHLIGHTS</span>
+                </div>
+
+                <!-- Suit Timeline Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Mark I -->
+                    <div class="stark-glass rounded-xl p-6 border border-stark-cyan/30 hover:border-stark-gold transition duration-300 group cursor-pointer" onclick="showSuitPreview('Mark I', 'Built in a cave from crude materials. Features flamethrowers and heavy metal plating.', '2008 (Iron Man)')">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="font-orbitron text-2xl font-black text-stark-gold group-hover:text-white">MARK I</span>
+                            <span class="text-xs font-orbitron px-2 py-1 rounded bg-gray-800 text-gray-300">2008</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-2">The Prototype</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">Crafted out of desperation with scrap metal. Powered by the crude original Arc Reactor.</p>
+                        <div class="text-stark-cyan text-xs font-orbitron flex items-center group-hover:underline">
+                            <span>VIEW DETAILS</span>
+                            <i class="fa-solid fa-angle-right ml-1"></i>
+                        </div>
+                    </div>
+
+                    <!-- Mark III -->
+                    <div class="stark-glass rounded-xl p-6 border border-stark-cyan/30 hover:border-stark-gold transition duration-300 group cursor-pointer" onclick="showSuitPreview('Mark III', 'Iconic Hot-Rod red and gold titanium alloy suit. Integrated repulsors and weapons.', '2008 (Iron Man)')">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="font-orbitron text-2xl font-black text-stark-brightRed group-hover:text-stark-gold">MARK III</span>
+                            <span class="text-xs font-orbitron px-2 py-1 rounded bg-gray-800 text-gray-300">2008</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-2">Hot-Rod Red Classic</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">Solves icing issues using Gold-Titanium alloy. Introduces the signature aesthetic.</p>
+                        <div class="text-stark-cyan text-xs font-orbitron flex items-center group-hover:underline">
+                            <span>VIEW DETAILS</span>
+                            <i class="fa-solid fa-angle-right ml-1"></i>
+                        </div>
+                    </div>
+
+                    <!-- Mark XLVI (46) -->
+                    <div class="stark-glass rounded-xl p-6 border border-stark-cyan/30 hover:border-stark-gold transition duration-300 group cursor-pointer" onclick="showSuitPreview('Mark XLVI', 'Civil War suit optimized for rapid deployment with multiple mini arc reactors across the body.', '2016 (Civil War)')">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="font-orbitron text-2xl font-black text-stark-gold group-hover:text-stark-brightRed">MARK XLVI</span>
+                            <span class="text-xs font-orbitron px-2 py-1 rounded bg-gray-800 text-gray-300">2016</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-2">Civil War Armor</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">Features collapsible structure and enhanced tactical targeting for close quarters.</p>
+                        <div class="text-stark-cyan text-xs font-orbitron flex items-center group-hover:underline">
+                            <span>VIEW DETAILS</span>
+                            <i class="fa-solid fa-angle-right ml-1"></i>
+                        </div>
+                    </div>
+
+                    <!-- Mark LXXXV (85) -->
+                    <div class="stark-glass rounded-xl p-6 border border-stark-cyan/30 hover:border-stark-gold transition duration-300 group cursor-pointer" onclick="showSuitPreview('Mark LXXXV', 'Ultimate Nanotech suit capable of forming any structure, energy shield, and holding Infinity Stones.', '2019 (Endgame)')">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="font-orbitron text-2xl font-black text-stark-cyan group-hover:text-white">MARK LXXXV</span>
+                            <span class="text-xs font-orbitron px-2 py-1 rounded bg-gray-800 text-gray-300">2019</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-2">Nanotech Apex</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">Combines sleek comic-classic design with advanced nanotech fluid geometry.</p>
+                        <div class="text-stark-cyan text-xs font-orbitron flex items-center group-hover:underline">
+                            <span>VIEW DETAILS</span>
+                            <i class="fa-solid fa-angle-right ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Iconic Quotes Carousel/Grid -->
+            <section class="space-y-6">
+                <h2 class="font-orbitron text-3xl font-bold text-white flex items-center">
+                    <i class="fa-solid fa-quote-left text-stark-gold mr-3"></i>MEMORABLE MCU QUOTES
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="stark-glass-red p-6 rounded-xl relative overflow-hidden flex flex-col justify-between">
+                        <p class="text-gray-200 italic text-lg leading-relaxed mb-4">
+                            "If we can't protect the Earth, you can be damn well sure we'll avenge it."
+                        </p>
+                        <span class="font-orbitron text-xs text-stark-gold font-semibold uppercase tracking-wider">— Marvel's The Avengers (2012)</span>
+                    </div>
+
+                    <div class="stark-glass p-6 rounded-xl relative overflow-hidden flex flex-col justify-between border-stark-cyan/40">
+                        <p class="text-gray-200 italic text-lg leading-relaxed mb-4">
+                            "You can take away my house, all my tricks and toys. One thing you can't take away... I am Iron Man."
+                        </p>
+                        <span class="font-orbitron text-xs text-stark-cyan font-semibold uppercase tracking-wider">— Iron Man 3 (2013)</span>
+                    </div>
+
+                    <div class="stark-glass-red p-6 rounded-xl relative overflow-hidden flex flex-col justify-between">
+                        <p class="text-gray-200 italic text-lg leading-relaxed mb-4">
+                            "I love you three thousand."
+                        </p>
+                        <span class="font-orbitron text-xs text-stark-brightRed font-semibold uppercase tracking-wider">— Avengers: Endgame (2019)</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Gallery Modal Trigger Section -->
+            <section class="stark-glass p-8 rounded-2xl border border-stark-cyan/30 text-center space-y-4">
+                <h3 class="font-orbitron text-2xl font-bold text-white">MCU Media Archives</h3>
+                <p class="text-gray-400 max-w-xl mx-auto">Explore high-resolution visual archives of Iron Man's most crucial cinematic missions and encounters.</p>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
+                    <div class="relative group rounded-lg overflow-hidden border border-stark-cyan/20 aspect-video bg-gray-900 flex items-center justify-center cursor-pointer" onclick="openGalleryModal('Battle of New York', 'Leading the Nuke into the Wormhole (2012)')">
+                        <i class="fa-solid fa-shield-virus text-4xl text-stark-cyan/50 group-hover:text-stark-cyan group-hover:scale-110 transition duration-300"></i>
+                        <span class="absolute bottom-2 left-2 text-xs font-orbitron text-white font-bold bg-black/70 px-2 py-0.5 rounded">New York 2012</span>
+                    </div>
+                    <div class="relative group rounded-lg overflow-hidden border border-stark-cyan/20 aspect-video bg-gray-900 flex items-center justify-center cursor-pointer" onclick="openGalleryModal('Sokovia Defense', 'Deploying the Veronica Protocol & Hulkbuster (2015)')">
+                        <i class="fa-solid fa-robot text-4xl text-stark-gold/50 group-hover:text-stark-gold group-hover:scale-110 transition duration-300"></i>
+                        <span class="absolute bottom-2 left-2 text-xs font-orbitron text-white font-bold bg-black/70 px-2 py-0.5 rounded">Sokovia 2015</span>
+                    </div>
+                    <div class="relative group rounded-lg overflow-hidden border border-stark-cyan/20 aspect-video bg-gray-900 flex items-center justify-center cursor-pointer" onclick="openGalleryModal('Titan Showdown', 'Duel against the Mad Titan Thanos (2018)')">
+                        <i class="fa-solid fa-hand-fist text-4xl text-stark-brightRed/50 group-hover:text-stark-brightRed group-hover:scale-110 transition duration-300"></i>
+                        <span class="absolute bottom-2 left-2 text-xs font-orbitron text-white font-bold bg-black/70 px-2 py-0.5 rounded">Titan 2018</span>
+                    </div>
+                    <div class="relative group rounded-lg overflow-hidden border border-stark-cyan/20 aspect-video bg-gray-900 flex items-center justify-center cursor-pointer" onclick="openGalleryModal('The Final Snap', 'The ultimate sacrifice to save the universe (2019)')">
+                        <i class="fa-solid fa-[#00F0FF] fa-gem text-4xl text-stark-cyan/50 group-hover:text-stark-cyan group-hover:scale-110 transition duration-300"></i>
+                        <span class="absolute bottom-2 left-2 text-xs font-orbitron text-white font-bold bg-black/70 px-2 py-0.5 rounded">Earth 2023</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ================= PAGE 2: TECH & MISSIONS / ARMOR VAULT ================= -->
+        <div id="page-tech" class="hidden space-y-12">
+            
+            <!-- Vault Title Banner -->
+            <div class="stark-glass p-8 rounded-2xl border-b-4 border-stark-gold flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <span class="text-xs font-orbitron text-stark-cyan uppercase tracking-widest">STARK SECURITY LEVEL 10 REQUIRED</span>
+                    <h1 class="font-orbitron text-3xl sm:text-5xl font-black text-white mt-1">ARMOR VAULT & TECH</h1>
+                    <p class="text-gray-300 mt-2">Interactive technical breakdown and armor diagnostics system.</p>
+                </div>
+                <div class="flex items-center space-x-4 bg-black/60 px-6 py-4 rounded-xl border border-stark-cyan/30">
+                    <i class="fa-solid fa-microchip text-3xl text-stark-cyan"></i>
+                    <div>
+                        <div class="text-xs font-orbitron text-gray-400">ACTIVE SYSTEM</div>
+                        <div class="font-orbitron text-sm font-bold text-stark-gold">F.R.I.D.A.Y. v4.2</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Armor Inspection Card System -->
+            <section class="space-y-6">
+                <h2 class="font-orbitron text-2xl font-bold text-white flex items-center">
+                    <i class="fa-solid fa-sliders text-stark-cyan mr-3"></i>INTERACTIVE SUIT INSPECTOR
+                </h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Suit Selector Panel -->
+                    <div class="stark-glass p-6 rounded-xl space-y-4">
+                        <h3 class="font-orbitron text-lg font-bold text-stark-gold mb-4 border-b border-stark-gold/30 pb-2">SELECT ARMOR</h3>
+                        
+                        <button onclick="inspectSuit('mk1')" id="btn-mk1" class="suit-btn w-full text-left p-4 rounded-lg border border-stark-cyan/30 bg-stark-cyan/10 hover:border-stark-cyan transition duration-200 flex justify-between items-center">
+                            <div>
+                                <div class="font-orbitron font-bold text-white">Mark I</div>
+                                <div class="text-xs text-gray-400">Improvised Combat Suit</div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-stark-cyan"></i>
+                        </button>
+
+                        <button onclick="inspectSuit('mk7')" id="btn-mk7" class="suit-btn w-full text-left p-4 rounded-lg border border-stark-cyan/20 hover:border-stark-cyan transition duration-200 flex justify-between items-center">
+                            <div>
+                                <div class="font-orbitron font-bold text-white">Mark VII</div>
+                                <div class="text-xs text-gray-400">Rapid Deployment Heavy Armor</div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-stark-cyan"></i>
+                        </button>
+
+                        <button onclick="inspectSuit('mk44')" id="btn-mk44" class="suit-btn w-full text-left p-4 rounded-lg border border-stark-cyan/20 hover:border-stark-cyan transition duration-200 flex justify-between items-center">
+                            <div>
+                                <div class="font-orbitron font-bold text-white">Mark XLIV (Hulkbuster)</div>
+                                <div class="text-xs text-gray-400">Heavy Duty Suppressive Suit</div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-stark-cyan"></i>
+                        </button>
+
+                        <button onclick="inspectSuit('mk50')" id="btn-mk50" class="suit-btn w-full text-left p-4 rounded-lg border border-stark-cyan/20 hover:border-stark-cyan transition duration-200 flex justify-between items-center">
+                            <div>
+                                <div class="font-orbitron font-bold text-white">Mark L (50)</div>
+                                <div class="text-xs text-gray-400">Nanotech Vanguard Armor</div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-stark-cyan"></i>
+                        </button>
+                    </div>
+
+                    <!-- Inspection Card Display -->
+                    <div class="lg:col-span-2 stark-glass p-6 sm:p-8 rounded-xl border border-stark-cyan/40 relative flex flex-col justify-between">
+                        <div class="absolute top-4 right-4 bg-stark-cyan/10 border border-stark-cyan text-stark-cyan text-xs px-3 py-1 rounded-full font-orbitron">
+                            DIAGNOSTICS ONLINE
+                        </div>
+
+                        <div>
+                            <div class="flex items-center space-x-4 mb-6">
+                                <div class="w-14 h-14 rounded-lg bg-stark-red/30 border border-stark-brightRed flex items-center justify-center text-stark-gold text-2xl font-orbitron font-black" id="suit-display-tag">
+                                    MK1
+                                </div>
+                                <div>
+                                    <h3 class="font-orbitron text-2xl sm:text-3xl font-bold text-white" id="suit-display-name">Mark I Prototype</h3>
+                                    <p class="text-stark-cyan text-sm font-orbitron" id="suit-display-role">Improvised Escape Suit</p>
+                                </div>
+                            </div>
+
+                            <p class="text-gray-300 text-base leading-relaxed mb-6" id="suit-display-desc">
+                                Hand-crafted in Afghanistan's Jericho cave system. Constructed from salvaged crude iron and missile components. Lacks flight stabilization but includes flame projectors.
+                            </p>
+
+                            <!-- Specifications Grid -->
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+                                <div class="bg-black/40 p-3 rounded-lg border border-gray-800">
+                                    <span class="text-xs font-orbitron text-gray-400 block">ARMOR MATERIAL</span>
+                                    <span class="font-orbitron font-bold text-stark-gold text-sm" id="spec-material">Iron Scrap Alloy</span>
+                                </div>
+                                <div class="bg-black/40 p-3 rounded-lg border border-gray-800">
+                                    <span class="text-xs font-orbitron text-gray-400 block">WEAPONRY</span>
+                                    <span class="font-orbitron font-bold text-stark-cyan text-sm" id="spec-weapons">Dual Flamethrowers</span>
+                                </div>
+                                <div class="bg-black/40 p-3 rounded-lg border border-gray-800">
+                                    <span class="text-xs font-orbitron text-gray-400 block">POWER SOURCE</span>
+                                    <span class="font-orbitron font-bold text-stark-brightRed text-sm" id="spec-power">Arc Reactor Mk I</span>
+                                </div>
+                            </div>
+
+                            <!-- Stat Progress Bars -->
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-xs font-orbitron text-gray-300 mb-1">
+                                        <span>DURABILITY & ARMOR</span>
+                                        <span id="stat-durability-val">65%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-800 rounded-full h-2">
+                                        <div id="stat-durability-bar" class="bg-stark-gold h-2 rounded-full transition-all duration-500" style="width: 65%"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-xs font-orbitron text-gray-300 mb-1">
+                                        <span>MOBILITY & SPEED</span>
+                                        <span id="stat-speed-val">20%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-800 rounded-full h-2">
+                                        <div id="stat-speed-bar" class="bg-stark-cyan h-2 rounded-full transition-all duration-500" style="width: 20%"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-xs font-orbitron text-gray-300 mb-1">
+                                        <span>ENERGY OUTPUT</span>
+                                        <span id="stat-energy-val">40%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-800 rounded-full h-2">
+                                        <div id="stat-energy-bar" class="bg-stark-brightRed h-2 rounded-full transition-all duration-500" style="width: 40%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center text-xs font-orbitron text-gray-500">
+                            <span>STARK ARCHIVE FILE ID: <span id="suit-file-id">STK-001-A</span></span>
+                            <span class="text-stark-cyan"><i class="fa-solid fa-shield mr-1"></i>VERIFIED DESIGN</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stark Industries Tech Specs Grid -->
+            <section class="space-y-6">
+                <h2 class="font-orbitron text-2xl font-bold text-white flex items-center">
+                    <i class="fa-solid fa-microchip text-stark-gold mr-3"></i>CORE STARK TECHNOLOGIES
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="stark-glass p-6 rounded-xl border border-stark-cyan/30 hover:glow-cyan transition duration-300">
+                        <div class="w-12 h-12 rounded-full bg-stark-cyan/20 text-stark-cyan flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-atom"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-white mb-2">Arc Reactor Core</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Clean, self-sustaining clean fusion power generating gigawatts of clean energy per second. Transitioned from palladium core to badassium element.
+                        </p>
+                    </div>
+
+                    <div class="stark-glass p-6 rounded-xl border border-stark-gold/30 hover:glow-cyan transition duration-300">
+                        <div class="w-12 h-12 rounded-full bg-stark-gold/20 text-stark-gold flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-white mb-2">Autonomous AI Network</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Natural language interface supporting tactical battle calculations, life support monitoring, and instant suit orchestration (J.A.R.V.I.S / F.R.I.D.A.Y).
+                        </p>
+                    </div>
+
+                    <div class="stark-glass p-6 rounded-xl border border-stark-brightRed/30 hover:glow-cyan transition duration-300">
+                        <div class="w-12 h-12 rounded-full bg-stark-brightRed/20 text-stark-brightRed flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-cubes-stacked"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-white mb-2">Nanotech Fluid Matrix</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Microscopic nano-units stored inside the chest housing. Capable of instant morphing into shields, blasters, thrusters, and repairing damage in real-time.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key MCU Events Timeline -->
+            <section class="stark-glass p-8 rounded-xl border border-stark-cyan/30 space-y-6">
+                <h2 class="font-orbitron text-2xl font-bold text-white flex items-center">
+                    <i class="fa-solid fa-flag text-stark-brightRed mr-3"></i>KEY MCU MISSIONS & EVENTS
+                </h2>
+
+                <div class="space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg bg-black/40 border border-gray-800">
+                        <div class="flex items-start space-x-4">
+                            <span class="font-orbitron text-stark-cyan font-bold text-lg">2012</span>
+                            <div>
+                                <h4 class="font-orbitron font-bold text-white">The Battle of New York</h4>
+                                <p class="text-sm text-gray-400">Interception of Chitauri nuclear missile through the wormhole.</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-orbitron text-stark-gold bg-stark-gold/10 px-3 py-1 rounded border border-stark-gold/30 mt-2 sm:mt-0 self-start sm:self-center">AVENGERS ASSEMBLE</span>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg bg-black/40 border border-gray-800">
+                        <div class="flex items-start space-x-4">
+                            <span class="font-orbitron text-stark-brightRed font-bold text-lg">2015</span>
+                            <div>
+                                <h4 class="font-orbitron font-bold text-white">Sokovia Incident</h4>
+                                <p class="text-sm text-gray-400">Deployment of Hulkbuster and containment of Ultron threat.</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-orbitron text-stark-brightRed bg-stark-brightRed/10 px-3 py-1 rounded border border-stark-brightRed/30 mt-2 sm:mt-0 self-start sm:self-center">GLOBAL DEFENSE</span>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg bg-black/40 border border-gray-800">
+                        <div class="flex items-start space-x-4">
+                            <span class="font-orbitron text-stark-gold font-bold text-lg">2023</span>
+                            <div>
+                                <h4 class="font-orbitron font-bold text-white">Battle of Earth & Infinity Gauntlet</h4>
+                                <p class="text-sm text-gray-400">Creation of Nanotech Nano-Gauntlet and ultimate snap.</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-orbitron text-stark-cyan bg-stark-cyan/10 px-3 py-1 rounded border border-stark-cyan/30 mt-2 sm:mt-0 self-start sm:self-center">VICTORY & LEGACY</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-stark-cyan/20 bg-black/80 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="font-orbitron text-xs text-stark-cyan">STARK INDUSTRIES HUD SYSTEM • ALL RIGHTS RESERVED MCU</p>
+            <p class="text-xs text-gray-500">Designed with modern metallic styling, Arc Reactor theme, and interactive diagnostics.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Modal Container -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="stark-glass max-w-md w-full p-6 rounded-2xl border border-stark-cyan relative space-y-4">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div id="modal-content">
+                <!-- Dynamic Content injected here -->
+            </div>
+            
+            <button onclick="closeModal()" class="w-full py-2 bg-stark-cyan/20 border border-stark-cyan text-stark-cyan font-orbitron font-bold rounded-lg hover:bg-stark-cyan/30 transition">
+                CLOSE HUD NOTICE
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Navigation & Interactive Functions -->
+    <script>
+        // Page switching logic
+        function switchPage(pageId) {
+            const homePage = document.getElementById('page-home');
+            const techPage = document.getElementById('page-tech');
+            const navHome = document.getElementById('nav-home');
+            const navTech = document.getElementById('nav-tech');
+
+            if (pageId === 'home') {
+                homePage.classList.remove('hidden');
+                techPage.classList.add('hidden');
+                
+                // Update navigation styling
+                navHome.className = "px-4 py-2 rounded-md font-orbitron text-sm sm:text-base font-semibold transition-all duration-300 border border-stark-cyan/50 text-stark-cyan bg-stark-cyan/10 glow-cyan";
+                navTech.className = "px-4 py-2 rounded-md font-orbitron text-sm sm:text-base font-semibold transition-all duration-300 border border-transparent text-gray-400 hover:text-stark-gold hover:border-stark-gold/40";
+            } else if (pageId === 'tech') {
+                techPage.classList.remove('hidden');
+                homePage.classList.add('hidden');
+
+                // Update navigation styling
+                navTech.className = "px-4 py-2 rounded-md font-orbitron text-sm sm:text-base font-semibold transition-all duration-300 border border-stark-gold/50 text-stark-gold bg-stark-gold/10 glow-cyan";
+                navHome.className = "px-4 py-2 rounded-md font-orbitron text-sm sm:text-base font-semibold transition-all duration-300 border border-transparent text-gray-400 hover:text-stark-cyan hover:border-stark-cyan/40";
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Arc Reactor overcharge click event
+        let reactorOvercharge = false;
+        function pulseArcReactor() {
+            const reactor = document.getElementById('main-arc-reactor');
+            const outputText = document.getElementById('reactor-output');
+            
+            if (!reactorOvercharge) {
+                reactorOvercharge = true;
+                outputText.innerText = '300% (OVERPOWER)';
+                outputText.className = 'text-stark-gold font-bold animate-pulse';
+                reactor.classList.add('glow-cyan-lg');
+                
+                setTimeout(() => {
+                    outputText.innerText = '100%';
+                    outputText.className = 'text-white font-bold';
+                    reactor.classList.remove('glow-cyan-lg');
+                    reactorOvercharge = false;
+                }, 2500);
+            }
+        }
+
+        // Suit Inspection Card System Data
+        const suitData = {
+            mk1: {
+                tag: 'MK1',
+                name: 'Mark I Prototype',
+                role: 'Improvised Escape Armor',
+                desc: 'Hand-crafted in a cave from crude materials. Includes dual arm-mounted flamethrowers and rocket launcher. Heavy and unrefined.',
+                material: 'Cast Iron Scrap',
+                weapons: 'Flamethrower / Rockets',
+                power: 'Arc Reactor Mk I',
+                durability: 65,
+                speed: 20,
+                energy: 40,
+                fileID: 'STK-001-A'
+            },
+            mk7: {
+                tag: 'MK7',
+                name: 'Mark VII Deployable',
+                role: 'Rapid Response Combat Unit',
+                desc: 'Features pod-deployment with automatic assembly onto Tony Stark via tracking wristbands. Heavy laser pods and shoulder missile banks.',
+                material: 'Gold-Titanium Alloy',
+                weapons: 'Lasers / Missiles',
+                power: 'Arc Reactor Mk III',
+                durability: 82,
+                speed: 85,
+                energy: 80,
+                fileID: 'STK-007-B'
+            },
+            mk44: {
+                tag: 'MK44',
+                name: 'Mark XLIV (Hulkbuster)',
+                role: 'Heavy Suppression Armor System',
+                desc: 'Deploys from orbit via the Veronica satellite module. Designed to encapsulate existing armor and neutralize code-red threats like the Hulk.',
+                material: 'Impact-Resistant Plate',
+                weapons: 'Pneumatic Jackhammers',
+                power: 'Multi Arc Reactors',
+                durability: 98,
+                speed: 45,
+                energy: 90,
+                fileID: 'STK-044-H'
+            },
+            mk50: {
+                tag: 'MK50',
+                name: 'Mark L (Nanotech)',
+                role: 'Nanotechnology Vanguard Armor',
+                desc: 'Uses flexible nanites stored in the chest reactor to form weapons, wings, thrusters, shields, and repair structural integrity on command.',
+                material: 'Nanite Fluid Matrix',
+                weapons: 'Morphing Repulsors/Blade',
+                power: 'Nanite Arc Reactor',
+                durability: 95,
+                speed: 98,
+                energy: 99,
+                fileID: 'STK-050-N'
+            }
+        };
+
+        function inspectSuit(suitKey) {
+            const data = suitData[suitKey];
+            if (!data) return;
+
+            // Highlight button
+            document.querySelectorAll('.suit-btn').forEach(btn => {
+                btn.classList.remove('border-stark-cyan', 'bg-stark-cyan/10');
+                btn.classList.add('border-stark-cyan/20');
+            });
+            const activeBtn = document.getElementById(`btn-${suitKey}`);
+            if(activeBtn) {
+                activeBtn.classList.add('border-stark-cyan', 'bg-stark-cyan/10');
+            }
+
+            // Update content
+            document.getElementById('suit-display-tag').innerText = data.tag;
+            document.getElementById('suit-display-name').innerText = data.name;
+            document.getElementById('suit-display-role').innerText = data.role;
+            document.getElementById('suit-display-desc').innerText = data.desc;
+
+            document.getElementById('spec-material').innerText = data.material;
+            document.getElementById('spec-weapons').innerText = data.weapons;
+            document.getElementById('spec-power').innerText = data.power;
+
+            document.getElementById('stat-durability-val').innerText = `${data.durability}%`;
+            document.getElementById('stat-durability-bar').style.width = `${data.durability}%`;
+
+            document.getElementById('stat-speed-val').innerText = `${data.speed}%`;
+            document.getElementById('stat-speed-bar').style.width = `${data.speed}%`;
+
+            document.getElementById('stat-energy-val').innerText = `${data.energy}%`;
+            document.getElementById('stat-energy-bar').style.width = `${data.energy}%`;
+
+            document.getElementById('suit-file-id').innerText = data.fileID;
+        }
+
+        // Modal Helpers
+        function showSuitPreview(name, detail, year) {
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="space-y-3">
+                    <span class="text-xs font-orbitron text-stark-gold border border-stark-gold/40 px-2 py-0.5 rounded">${year}</span>
+                    <h3 class="font-orbitron text-2xl font-bold text-white">${name}</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">${detail}</p>
+                </div>
+            `;
+            document.getElementById('modal-backdrop').classList.remove('hidden');
+        }
+
+        function openGalleryModal(title, desc) {
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="space-y-3">
+                    <div class="w-12 h-12 rounded-full bg-stark-cyan/20 text-stark-cyan flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-film"></i>
+                    </div>
+                    <h3 class="font-orbitron text-2xl font-bold text-white">${title}</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">${desc}</p>
+                    <p class="text-xs text-stark-cyan font-orbitron">RECORDED IN STARK ARCHIVES</p>
+                </div>
+            `;
+            document.getElementById('modal-backdrop').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-backdrop').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
